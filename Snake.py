@@ -70,15 +70,15 @@ def move_snake(event):
     if event.type == pygame.KEYDOWN:
         key = event.key
         if key == pygame.K_LEFT:
-            snake_dx =  -1 * SNAKE_SIZE
+            snake_dx = -1 * SNAKE_SIZE
             snake_dy = 0
         if key == pygame.K_RIGHT:
             snake_dx = SNAKE_SIZE
             snake_dy = 0
         if key == pygame.K_UP:
             snake_dx = 0
-            snake_dy = -1
-        if key ==   pygame.KEYDOWN:
+            snake_dy = -1 * SNAKE_SIZE
+        if key ==   pygame.K_DOWN:
             snake_dx = 0
             snake_dy = SNAKE_SIZE
 
@@ -101,8 +101,8 @@ def handle_snake():
     global head_coord
     body_coords.insert(0, head_coord)
     body_coords.pop()
-    snake_dx + head_x
-    snake_dy + head_y
+    head_x += snake_dx
+    head_y += snake_dy
     head_coord = (head_x, head_y, SNAKE_SIZE, SNAKE_SIZE)
 
 def reset_game_after_game_over(event):
@@ -112,7 +112,7 @@ def reset_game_after_game_over(event):
         head_x = WINDOW_WIDTH // 2
         head_y = WINDOW_HEIGHT // 2 + 100
         head_coord = (head_x, head_y, SNAKE_SIZE, SNAKE_SIZE)
-        body_coords = 0
+        body_coords = []
         snake_dx = 0
         snake_dy = 0
         is_paused = False
@@ -132,7 +132,7 @@ def check_game_over():
     global body_coords
     global running
     global is_paused
-    if head_rect.left == -1 or head_rect.right > WINDOW_WIDTH or head_rect.top == -1 or head_rect.bottom > WINDOW_HEIGHT:
+    if head_rect.left < 0 or head_rect.right > WINDOW_WIDTH or head_rect.top < 0 or head_rect.bottom > WINDOW_HEIGHT or head_rect in body_coords:
         display_surface.blit(game_over_text, game_over_rect)
         display_surface.blit(continue_text, continue_rect)
         pygame.display.update()
@@ -159,10 +159,11 @@ def blit_hud():
 
 
 def blit_assets():
+    global head_rect, apple_rect
     for body in body_coords:
         pygame.draw.rect(display_surface, DARKGREEN, body)
-        head_rect = pygame.draw.rect(display_surface, GREEN, head_coord)
-        apple_rect = pygame.draw.rect(display_surface, RED, apple_coord)
+    head_rect = pygame.draw.rect(display_surface, GREEN, head_coord)
+    apple_rect = pygame.draw.rect(display_surface, RED, apple_coord)
 
 def update_display_and_tick_clock():
     pygame.display.update()
