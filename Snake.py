@@ -41,13 +41,10 @@ def create_text_and_rect(text, color, background_color, **locations):
     return text, rect
 
 
-title_text, title_rect = create_text_and_rect("~~Snake~~", GREEN, DARKRED,
-                                             center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2))
+title_text, title_rect = create_text_and_rect("~~Snake~~", GREEN, DARKRED, center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2))
 score_text, score_rect = create_text_and_rect("Score: " + str(score), GREEN, DARKRED, topleft=(10, 10))
 
-game_over_text = font.render("GAMEOVER", True, RED, DARKGREEN)
-game_over_rect = game_over_text.get_rect()
-game_over_rect = center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2)
+game_over_text, game_over_rect = create_text_and_rect("~~GAMEOVER~~", RED, DARKGREEN, center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2))
 
 continue_text, continue_rect = create_text_and_rect("~~Press any key to play again~~", RED, DARKGREEN, center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 64))
 
@@ -132,7 +129,7 @@ def check_game_over():
     global body_coords
     global running
     global is_paused
-    if head_rect.left < 0 or head_rect.right > WINDOW_WIDTH or head_rect.top < 0 or head_rect.bottom > WINDOW_HEIGHT or head_rect in body_coords:
+    if head_rect.left < 0 or head_rect.right > WINDOW_WIDTH or head_rect.top < 0 or head_rect.bottom > WINDOW_HEIGHT or head_coord in body_coords:
         display_surface.blit(game_over_text, game_over_rect)
         display_surface.blit(continue_text, continue_rect)
         pygame.display.update()
